@@ -1,0 +1,25 @@
+Pred začiatkom hry
+- Kliknite na tlačidlo START
+- Vyberte počet a polohu lodí
+
+Umiestnenie lodí
+- Loď môže byť orientovaná len horizontálne alebo vertikálne
+- Inú loď nemôžete umiestniť tak,
+aby zaberala priliehajúce štvorce (ani po diagonále)
+- Sú 4 typy lodí s rôznou dĺžkou:
+    ~ lietadlová loď = C(5)
+    ~ krížnik = F(4)
+    ~ ponorka = S(3)
+    ~ torpédoborec = T(2)
+- Manuálne umiestnenie lodí vo formáte:
+TYP hor/ver Y X
+(Y, X súradnice pre vrchol/začiatok lode)
+
+Hra
+- Do vstupu dolu zadajte súradnice,
+kde chcete vystreliť (napr. a0/A0) a stačte ENTER
+- Po zásahu pokračujete, až kým neminiete
+- inak je na rade súper, ktorý zahrá ťah automaticky
+- Cieľom je zostreliť lode súpera skôr ako budú zničené vaše
+- Tlačidlom RESET sa vrátite späť ku rozmiestneniu lodí
+
