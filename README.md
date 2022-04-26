@@ -1,4 +1,4 @@
 # Battleships_game
-Classic game of Boats
+Classic board game of Battleships in Python
 
-This is the first version of my first game in python, based on classic board game Battleships.
+This is the first version of my first game in Python, based on classic board game Battleships.
