@@ -1,7 +1,6 @@
 from tkinter import *
 from PIL import Image, ImageTk
 import random as rn
-#  from pygame import mixer
 
 
 def generate_board(height, width, c, f, s, t, origin):  # carrier(5), fighter(4), sub(3), torpedo(2)
@@ -254,12 +253,14 @@ def place_boats():
                 my_boats_list.remove('\n')
             except ValueError:
                 break
-
     for i in range(int(len(my_boats_list)/6)):
-        new_boat = [my_boats_list[0], f'{my_boats_list[1]}{my_boats_list[2]}{my_boats_list[3]}', int(my_boats_list[5]),
-                    int(ord(my_boats_list[4])-65)]
-        my_boats_list[:6] = ''
-        my_boats_list.append(new_boat)
+        try:
+            new_boat = [my_boats_list[0], f'{my_boats_list[1]}{my_boats_list[2]}{my_boats_list[3]}', int(my_boats_list[5]),
+                        int(ord(my_boats_list[4])-65)]
+            my_boats_list[:6] = ''
+            my_boats_list.append(new_boat)
+        except ValueError:
+            pass
 
     my_board = []
     for i in range(10):
@@ -435,37 +436,43 @@ def win_lose():
 
 def my_move(self):
     global opponent_board, opponent_score, my_score, my_board_shots, opponent_transparent
-    if ord(shots_input.get()[0]) > 75:
-        y = ord(shots_input.get()[0])-97
-    else:
-        y = ord(shots_input.get()[0])-65
-    x = int(shots_input.get()[1])
-    shots_input.delete(0, 'end')
-    if opponent_board[y][x] == 'a':
-        return False
-    else:
-        if opponent_board[y][x] == '-' or opponent_board[y][x] == 'o':
-            opponent_board[y][x] = 'a'
-            result = False
+    try:
+        if ord(shots_input.get()[0]) > 75:
+            y = ord(shots_input.get()[0])-97
         else:
-            result = True
-            opponent_score -= 1
+            y = ord(shots_input.get()[0])-65
+        x = int(shots_input.get()[1])
+    except ValueError:
+        shots_input.delete(0, 'end')
+    except IndexError:
+        pass
+    else:
+        shots_input.delete(0, 'end')
+        if opponent_board[y][x] == 'a':
+            return False
+        else:
+            if opponent_board[y][x] == '-' or opponent_board[y][x] == 'o':
+                opponent_board[y][x] = 'a'
+                result = False
+            else:
+                result = True
+                opponent_score -= 1
 
+            if result is False:
+                img = Image.open('opponent_files/MISS.png')
+            else:
+                img = Image.open('opponent_files/HIT.png')
+            opponent_transparent.paste(img, (50 * x, 50 * y))
+            my_board_shots = ImageTk.PhotoImage(opponent_transparent)
+            platno.create_image(60, 60, anchor=NW, image=my_board_shots)
+            opponent_score_display.configure(text=opponent_score)
         if result is False:
-            img = Image.open('opponent_files/MISS.png')
-        else:
-            img = Image.open('opponent_files/HIT.png')
-        opponent_transparent.paste(img, (50 * x, 50 * y))
-        my_board_shots = ImageTk.PhotoImage(opponent_transparent)
-        platno.create_image(60, 60, anchor=NW, image=my_board_shots)
-        opponent_score_display.configure(text=opponent_score)
-    if result is False:
-        ai()
+            ai()
 
-    if my_score == 0 or opponent_score == 0:
-        platno.update()
-        platno.after(1000)
-        win_lose()
+        if my_score == 0 or opponent_score == 0:
+            platno.update()
+            platno.after(1000)
+            win_lose()
 
 
 def ai():
@@ -654,10 +661,6 @@ root.geometry(f'{widnow_x}x{window_y}')
 root.configure(bg='#2e2e2e')
 
 root.bind('<Return>', my_move)
-
-# mixer.init()
-# mixer.music.load("tagmp3_sountrack.mp3")
-# mixer.music.play(-1)
 
 title_img_tk = PhotoImage(file='art_work/title_screen.png')
 title_background = Label(root, width=widnow_x, height=window_y, bg='white', image=title_img_tk)
